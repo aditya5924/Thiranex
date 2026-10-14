@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Mahajan | BSc Computer Science Portfolio</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Portfolio of Aditya Mahajan, a third-year BSc Computer Science student specializing in software development, AI, and web technologies.">
+    <meta name="keywords" content="Aditya Mahajan, Portfolio, Computer Science, Developer, Python, C++, SignSpeak AI, Web Development">
+    <meta name="author" content="Aditya Mahajan">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://adityamahajan.example.com">
+    
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:title" content="Aditya Mahajan | Software Developer">
+    <meta property="og:description" content="Portfolio of Aditya Mahajan, a BSc Computer Science student building accessible and innovative software solutions.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Configuration for Luxury Light Mode -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #fafafa;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Focus rings for accessibility */
+        *:focus-visible {
+            outline: 2px solid #475569;
+            outline-offset: 4px;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #0f172a;
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.2s;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="fixed w-full top-0 z-50 glass-nav shadow-sm transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#home" class="nav-link text-xl font-semibold tracking-tight text-brand-900" aria-label="Aditya Mahajan Home">
+                        Aditya<span class="text-brand-500">.</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8" aria-label="Main Navigation">
+                    <a href="#home" class="nav-link px-3 py-2 text-sm font-medium text-brand-600 hover:text-brand-900 transition-colors" aria-current="page">Home</a>
+                    <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-brand-600 hover:text-brand-900 transition-colors">About</a>
+                    <a href="#skills" class="nav-link px-3 py-2 text-sm font-medium text-brand-600 hover:text-brand-900 transition-colors">Skills</a>
+                    <a href="#projects" class="nav-link px-3 py-2 text-sm font-medium text-brand-600 hover:text-brand-900 transition-colors">Projects</a>
+                    <a href="#contact" class="nav-link px-3 py-2 text-sm font-medium text-brand-600 hover:text-brand-900 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-brand-600 hover:text-brand-900 focus:outline-none p-2 rounded-md" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-brand-100 shadow-md">
+            <nav class="px-2 pt-2 pb-3 space-y-1 sm:px-3" aria-label="Mobile Navigation">
+                <a href="#home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-brand-800 bg-brand-50" aria-current="page">Home</a>
+                <a href="#about" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-brand-600 hover:text-brand-800 hover:bg-brand-50">About</a>
+                <a href="#skills" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-brand-600 hover:text-brand-800 hover:bg-brand-50">Skills</a>
+                <a href="#projects" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-brand-600 hover:text-brand-800 hover:bg-brand-50">Projects</a>
+                <a href="#contact" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-brand-600 hover:text-brand-800 hover:bg-brand-50">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+        
+        <!-- Home Section -->
+        <section id="home" class="page-section active min-h-[70vh] flex flex-col justify-center" aria-labelledby="home-heading">
+            <div class="max-w-3xl">
+                <span class="text-brand-500 font-medium tracking-wide uppercase text-sm mb-4 block">Welcome to my portfolio</span>
+                <h1 id="home-heading" class="text-5xl md:text-7xl font-bold text-brand-900 tracking-tight leading-tight mb-6">
+                    Hi, I'm Aditya Mahajan.
+                </h1>
+                <p class="text-xl md:text-2xl text-brand-600 font-light mb-10 max-w-2xl leading-relaxed">
+                    A third-year BSc Computer Science student crafting elegant software solutions and exploring the frontiers of web development and AI.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projects" class="nav-link inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-brand-900 hover:bg-brand-800 shadow-sm transition-all" aria-label="View my projects">
+                        View Projects
+                    </a>
+                    <a href="#contact" class="nav-link inline-flex items-center justify-center px-6 py-3 border border-brand-200 text-base font-medium rounded-lg text-brand-700 bg-white hover:bg-brand-50 hover:border-brand-300 shadow-sm transition-all" aria-label="Contact me">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section py-12" aria-labelledby="about-heading">
+            <h2 id="about-heading" class="text-3xl font-bold text-brand-900 mb-8">About Me</h2>
+            <div class="bg-white rounded-2xl p-8 shadow-soft border border-brand-100">
+                <div class="prose prose-lg text-brand-600 max-w-none">
+                    <p class="mb-4">
+                        I am a passionate third-year Bachelor of Science in Computer Science student with a strong foundation in software engineering principles and a keen eye for clean, modern design. My academic journey has been driven by a curiosity to understand how complex systems work and a desire to build tools that solve real-world problems.
+                    </p>
+                    <p class="mb-4">
+                        Beyond coursework, I actively engage in independent projects that bridge the gap between theoretical knowledge and practical application. I believe in writing semantic, accessible code and designing interfaces that offer intuitive user experiences.
+                    </p>
+                    <p>
+                        When I'm not coding, I am exploring new technologies, contributing to collaborative environments, and continuously refining my skill set to adapt to the ever-evolving tech landscape.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="page-section py-12" aria-labelledby="skills-heading">
+            <h2 id="skills-heading" class="text-3xl font-bold text-brand-900 mb-8">Technical Skills</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Skill Cards -->
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">Python</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">C</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">C++</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">HTML5</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">CSS3</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">JavaScript</span>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-soft border border-brand-100 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                    <span class="text-lg font-medium text-brand-800">SQL</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="page-section py-12" aria-labelledby="projects-heading">
+            <h2 id="projects-heading" class="text-3xl font-bold text-brand-900 mb-8">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-soft border border-brand-100 flex flex-col h-full">
+                    <div class="p-8 flex-grow">
+                        <h3 class="text-xl font-semibold text-brand-900 mb-3">SignSpeak AI</h3>
+                        <p class="text-brand-600 mb-6 line-clamp-3">
+                            An innovative artificial intelligence solution designed to bridge communication gaps by translating sign language gestures into text and speech in real-time.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">Python</span>
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">AI/ML</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-soft border border-brand-100 flex flex-col h-full">
+                    <div class="p-8 flex-grow">
+                        <h3 class="text-xl font-semibold text-brand-900 mb-3">SFS ONLINE ROOMS</h3>
+                        <p class="text-brand-600 mb-6 line-clamp-3">
+                            A comprehensive web-based platform facilitating seamless booking and management of online virtual rooms for educational and collaborative purposes.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">HTML/CSS/JS</span>
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">SQL</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="bg-white rounded-2xl overflow-hidden shadow-soft border border-brand-100 flex flex-col h-full">
+                    <div class="p-8 flex-grow">
+                        <h3 class="text-xl font-semibold text-brand-900 mb-3">Train Date Tracker</h3>
+                        <p class="text-brand-600 mb-6 line-clamp-3">
+                            A utility application designed to help users track train schedules, availability dates, and manage their travel itineraries efficiently.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">C++</span>
+                            <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full">Data Structures</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section py-12" aria-labelledby="contact-heading">
+            <h2 id="contact-heading" class="text-3xl font-bold text-brand-900 mb-8">Get In Touch</h2>
+            <div class="bg-white rounded-2xl p-8 shadow-soft border border-brand-100 max-w-2xl">
+                <p class="text-brand-600 mb-8">Have a question or want to work together? Fill out the form below and I'll get back to you as soon as possible.</p>
+                
+                <form action="#" method="POST" class="space-y-6" novalidate onsubmit="event.preventDefault(); alert('Form submitted successfully!');">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-brand-700 mb-1">Full Name <span aria-hidden="true" class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" required aria-required="true" class="w-full px-4 py-3 rounded-lg border border-brand-200 bg-brand-50 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors text-brand-900">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-brand-700 mb-1">Email Address <span aria-hidden="true" class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" required aria-required="true" class="w-full px-4 py-3 rounded-lg border border-brand-200 bg-brand-50 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors text-brand-900">
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-brand-700 mb-1">Message <span aria-hidden="true" class="text-red-500">*</span></label>
+                        <textarea id="message" name="message" rows="5" required aria-required="true" class="w-full px-4 py-3 rounded-lg border border-brand-200 bg-brand-50 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors text-brand-900 resize-none"></textarea>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-brand-900 text-white font-medium rounded-lg shadow-sm hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-900 transition-colors" aria-label="Send message">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-brand-200 py-8 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-sm text-brand-500 text-center md:text-left">
+                &copy; <span id="current-year"></span> Aditya Mahajan. All rights reserved.
+            </p>
+            <div class="flex space-x-6" aria-label="Social Links">
+                <a href="https://github.com/aditya5924" class="text-brand-400 hover:text-brand-900 transition-colors" aria-label="GitHub Profile">
+                    <span class="sr-only">GitHub</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/adity-mahajan-a45419441/" class="text-brand-400 hover:text-brand-900 transition-colors" aria-label="LinkedIn Profile">
+                    <span class="sr-only">LinkedIn</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.page-section');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+                mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+            function navigateTo(hash) {
+                if (!hash) hash = '#home';
+                
+                sections.forEach(sec => {
+                    sec.classList.remove('active');
+                    sec.setAttribute('aria-hidden', 'true');
+                });
+               
+                const targetSection = document.querySelector(hash);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    targetSection.removeAttribute('aria-hidden'); 
+                   
+                    const sectionTitle = hash.substring(1).charAt(0).toUpperCase() + hash.substring(2);
+                    document.title = `Aditya Mahajan | ${sectionTitle}`;
+                
+                    const heading = targetSection.querySelector('h1, h2');
+                    if (heading) {
+                        heading.setAttribute('tabindex', '-1');
+                        heading.focus();
+                        heading.style.outline = 'none'; 
+                    }
+                }
+                
+               
+                links.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.setAttribute('aria-current', 'page');
+                        link.classList.add('text-brand-900', 'font-semibold');
+                        link.classList.remove('text-brand-600');
+                    } else {
+                        link.removeAttribute('aria-current');
+                        link.classList.remove('text-brand-900', 'font-semibold');
+                        link.classList.add('text-brand-600');
+                    }
+                });
+
+              
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const hash = e.currentTarget.getAttribute('href');
+                    window.history.pushState(null, '', hash);
+                    navigateTo(hash);
+                });
+            });
+
+            window.addEventListener('popstate', () => {
+                navigateTo(window.location.hash);
+            });
+
+            
+            navigateTo(window.location.hash || '#home');
+        });
+    </script>
+</body>
+</html>
