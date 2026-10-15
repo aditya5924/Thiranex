@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Mahajan | BSc Computer Science Portfolio</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Portfolio of Aditya Mahajan, Software Developer.">
+    <meta name="author" content="Aditya Mahajan">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. Custom CSS Variables for Dynamic Light/Dark Theme */
+        :root {
+            /* Light Mode (Luxury Minimalist) */
+            --bg-primary: #f8fafc;
+            --bg-surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-light: rgba(15, 23, 42, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --brand-color: #0f172a;
+            --brand-hover: #334155;
+            --btn-text: #ffffff;
+            --pill-bg: #f1f5f9;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 15px 35px -5px rgba(0, 0, 0, 0.05);
+            --transition-bounce: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode (Clean Professional Slate - No Neon) */
+            --bg-primary: #0f172a;
+            --bg-surface: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --brand-color: #f8fafc;
+            --brand-hover: #cbd5e1;
+            --btn-text: #0f172a;
+            --pill-bg: #334155;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Base Resets (Mobile-First) */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        
+        /* 2. Flexbox Utilities for Localized Alignment */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .flex-wrap { flex-wrap: wrap; }
+
+        /* Navigation */
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 5rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-links { display: none; } /* Mobile hidden */
+
+        .nav-links a {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: 999px;
+            transition: var(--transition-bounce);
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            background-color: var(--border-light);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-bounce);
+        }
+        .theme-toggle:hover { background-color: var(--border-light); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+
+        /* Core Layout Architecture */
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 7rem 1.5rem 4rem;
+        }
+
+        .page-section { display: none; animation: slideUpFade 0.5s ease-out forwards; }
+        .page-section.active { display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - 15rem); }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3. CSS Grid Architecture for Complex Layouts (Mobile-First) */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        /* Components */
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-bounce);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--text-muted);
+        }
+
+        /* Typography */
+        h1 { font-size: 2.75rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 0.5rem; line-height: 1.1; }
+        h2 { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 2rem; }
+        h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+        p { color: var(--text-muted); font-size: 1.05rem; }
+        
+        .hero-subtitle { font-size: 1.125rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .hero-desc { max-width: 600px; margin-bottom: 2.5rem; }
+
+        .pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--pill-bg);
+            color: var(--text-main);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Interactive Elements */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2rem;
+            border-radius: 999px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            border: none;
+        }
+        
+        .btn-primary { background-color: var(--brand-color); color: var(--btn-text); }
+        .btn-primary:hover { transform: scale(1.03); opacity: 0.9; }
+        
+        .btn-outline { background-color: transparent; border: 2px solid var(--border-light); color: var(--text-main); }
+        .btn-outline:hover { background-color: var(--border-light); }
+
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; }
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-light);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: inherit;
+            transition: var(--transition-bounce);
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            background-color: var(--bg-surface);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border-light);
+            padding: 2.5rem 1.5rem;
+            margin-top: auto;
+        }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .social-links svg { width: 22px; height: 22px; fill: currentColor; }
+        .social-links a { color: var(--text-muted); transition: var(--transition-bounce); }
+        .social-links a:hover { color: var(--text-main); transform: translateY(-3px); }
+
+        /* Accessibility */
+        *:focus-visible { outline: 2px solid var(--text-muted); outline-offset: 4px; }
+        .skip-link { position: absolute; top: -50px; left: 1rem; background: var(--brand-color); color: var(--btn-text); padding: 12px 24px; z-index: 1000; transition: top 0.3s; }
+        .skip-link:focus { top: 1rem; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+
+        /* 4. Mobile-First Responsive Media Queries */
+        @media (min-width: 768px) {
+            h1 { font-size: 4.5rem; }
+            .hero-subtitle, .hero-desc { font-size: 1.25rem; }
+            .nav-links { display: flex; } /* Desktop Nav visible */
+            
+            /* CSS Grid 2-column layout */
+            .grid-layout { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .skills-grid { grid-template-columns: repeat(3, 1fr); }
+            
+            .footer-content { flex-direction: row; justify-content: space-between; }
+        }
+
+        @media (min-width: 1024px) {
+            h1 { font-size: 5.5rem; }
+            /* CSS Grid 3-column layout */
+            .grid-layout.projects-grid { grid-template-columns: repeat(3, 1fr); }
+            .skills-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="glass-nav">
+        <div class="nav-container flex justify-between items-center">
+            <a href="#home" class="nav-link nav-brand" aria-label="Home">Aditya.</a>
+            
+            <div class="nav-right">
+                <nav class="nav-links gap-2" aria-label="Main Navigation">
+                    <a href="#home" class="nav-link active" aria-current="page">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#skills" class="nav-link">Skills</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </nav>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="sun-icon" class="sr-only" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="page-section active" aria-labelledby="home-heading">
+            <div class="flex flex-col">
+                <h1 id="home-heading">Aditya Mahajan</h1>
+                <p class="hero-subtitle">BSc Computer Science • Software Developer</p>
+                <p class="hero-desc">
+                    I love turning complex problems into simple, beautifully designed digital tools that just make sense. Whether I'm building a web application from scratch or refining a user interface, my goal is to write clean code that makes everyday tasks a little bit easier for people.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projects" class="btn btn-primary nav-link">View Work</a>
+                    <a href="#contact" class="btn btn-outline nav-link">Contact</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section" aria-labelledby="about-heading">
+            <h2 id="about-heading">Profile</h2>
+            <div class="card" style="max-width: 1000px;">
+                <p style="margin-bottom: 1.5rem;">
+                    I am a third-year Bachelor of Science in Computer Science student at St. Francis De Sales College in Nagpur, minoring in Electronics. My academic journey is deeply rooted in a passion for artificial intelligence, software engineering, and full-stack web development. I am currently engaged in a dedicated Python software development internship, bridging theoretical knowledge with practical, real-world application building.
+                </p>
+                <p>
+                    I thrive on architecting clean, scalable logic and designing minimalist, intuitive user interfaces that prioritize user experience and accessibility. Beyond writing code, I actively manage my repositories using Git, deploy robust applications utilizing modern web hosting platforms, and continually explore the latest advancements in modern web technologies to stay ahead of the curve.
+                </p>
+            </div>
+        </section>
+
+        <!-- Skills Section (CSS Grid) -->
+        <section id="skills" class="page-section" aria-labelledby="skills-heading">
+            <h2 id="skills-heading">Stack</h2>
+            <div class="grid-layout skills-grid">
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">Python</span></div>
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">C / C++</span></div>
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">JavaScript</span></div>
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">HTML / CSS</span></div>
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">SQL</span></div>
+                <div class="card flex justify-center items-center"><span style="font-weight: 600;">Git / GitHub</span></div>
+            </div>
+        </section>
+
+        <!-- Projects Section (CSS Grid) -->
+        <section id="projects" class="page-section" aria-labelledby="projects-heading">
+            <h2 id="projects-heading">Selected Works</h2>
+            <div class="grid-layout projects-grid">
+                <article class="card">
+                    <h3>SignSpeak AI</h3>
+                    <p style="flex-grow: 1; margin-bottom: 2rem;">
+                        An innovative artificial intelligence web application engineered to facilitate sign language alphabet learning. It utilizes MediaPipe Hands for highly accurate real-time gesture tracking, complemented by immediate voice feedback and comprehensive analytics for teachers to seamlessly monitor student progress.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="pill">Python</span>
+                        <span class="pill">AI/ML</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3>SFS ONLINE ROOMS</h3>
+                    <p style="flex-grow: 1; margin-bottom: 2rem;">
+                        A fully integrated college utility portal designed to streamline campus operations. Features include real-time QR-based attendance scanning, automated certificate generation with direct email integration, anonymous discussion forums, and a secure file-drop system.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="pill">Web Stack</span>
+                        <span class="pill">SQL</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3>Train Date Tracker</h3>
+                    <p style="flex-grow: 1; margin-bottom: 2rem;">
+                        A specialized web utility engineered to calculate the Indian Railways' 60-day Advance Reservation Period (ARP) with precision. Beyond basic date tracking, the platform serves as a comprehensive hub offering detailed guides on complex policies including RAC, Vikalp, and Tatkal rules.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="pill">C++</span>
+                        <span class="pill">Algorithms</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Inquiries</h2>
+            <div class="card" style="max-width: 650px;">
+                <form action="#" method="POST" novalidate onsubmit="event.preventDefault(); alert('Form submitted successfully!');">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required aria-required="true" style="resize: none;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" aria-label="Submit Form">Submit</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Flexbox Footer -->
+    <footer>
+        <div class="footer-content flex flex-col items-center gap-6">
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">&copy; <span id="current-year"></span> Aditya Mahajan.</p>
+            <div class="social-links flex gap-6" aria-label="Social Links">
+                <a href="https://github.com/aditya5924" aria-label="GitHub">
+                    <span class="sr-only">GitHub</span>
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/adity-mahajan-a45419441/" aria-label="LinkedIn">
+                    <span class="sr-only">LinkedIn</span>
+                    <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            /* Theme Toggle Logic */
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                if (currentTheme === 'light') {
+                    htmlElement.setAttribute('data-theme', 'dark');
+                    sunIcon.classList.remove('sr-only');
+                    moonIcon.classList.add('sr-only');
+                } else {
+                    htmlElement.setAttribute('data-theme', 'light');
+                    sunIcon.classList.add('sr-only');
+                    moonIcon.classList.remove('sr-only');
+                }
+            });
+
+            /* SPA Navigation Logic */
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.page-section');
+
+            function navigateTo(hash) {
+                if (!hash) hash = '#home';
+                
+                sections.forEach(sec => {
+                    sec.classList.remove('active');
+                    sec.setAttribute('aria-hidden', 'true');
+                });
+               
+                const targetSection = document.querySelector(hash);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    targetSection.removeAttribute('aria-hidden'); 
+                    document.title = `Aditya Mahajan | ${hash.substring(1).charAt(0).toUpperCase() + hash.substring(2)}`;
+                }
+                
+                links.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.setAttribute('aria-current', 'page');
+                        link.classList.add('active');
+                    } else {
+                        link.removeAttribute('aria-current');
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const hash = e.currentTarget.getAttribute('href');
+                    window.history.pushState(null, '', hash);
+                    navigateTo(hash);
+                });
+            });
+
+            window.addEventListener('popstate', () => navigateTo(window.location.hash));
+            navigateTo(window.location.hash || '#home');
+        });
+    </script>
+</body>
+</html>
