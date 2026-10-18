@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Weather Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for elegant UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* A dynamic looking gradient background */
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease-in-out, background 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-white flex items-center justify-center p-4 antialiased">
+
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-8 flex flex-col gap-6 fade-in">
+        
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-3xl font-bold tracking-tight mb-1 flex items-center justify-center gap-2">
+                <i class="ph ph-cloud-sun text-4xl"></i> WeatherDash
+            </h1>
+            <p class="text-blue-100 text-sm">Real-time asynchronous weather insights</p>
+        </div>
+
+        <!-- Search Form -->
+        <form id="search-form" class="relative">
+            <input 
+                type="text" 
+                id="city-input"
+                placeholder="Enter city name..." 
+                class="w-full bg-white/20 border border-white/30 rounded-xl py-3 pl-4 pr-12 text-white placeholder-blue-100 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                autocomplete="off"
+            >
+            <button 
+                type="submit" 
+                id="search-btn"
+                class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-white/10 hover:bg-white/30 transition-colors focus:outline-none"
+                aria-label="Search"
+            >
+                <i class="ph ph-magnifying-glass text-xl"></i>
+            </button>
+        </form>
+
+        <!-- Status Area (Loading & Errors) -->
+        <div id="status-message" class="hidden flex flex-col items-center justify-center text-center py-4">
+            <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Weather Display Area (Initially Hidden) -->
+        <div id="weather-display" class="hidden flex-col gap-6">
+            
+            <!-- Main Info -->
+            <div class="flex flex-col items-center text-center py-2">
+                <h2 id="location-name" class="text-2xl sm:text-3xl font-semibold mb-1">--</h2>
+                <p id="weather-description" class="text-blue-100 text-lg capitalize mb-4">--</p>
+                <div class="flex items-center justify-center gap-4">
+                    <div id="weather-icon" class="text-6xl drop-shadow-md">☀️</div>
+                    <div class="text-5xl font-bold tracking-tighter">
+                        <span id="temperature-value">--</span><span class="text-3xl font-medium text-blue-100">°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Humidity -->
+                <div class="metric-card rounded-2xl p-4 flex flex-col items-center text-center">
+                    <i class="ph ph-drop text-2xl text-blue-300 mb-2"></i>
+                    <span class="text-blue-100 text-sm font-medium">Humidity</span>
+                    <span class="text-xl font-semibold mt-1"><span id="humidity-value">--</span>%</span>
+                </div>
+                
+                <!-- Wind Speed -->
+                <div class="metric-card rounded-2xl p-4 flex flex-col items-center text-center">
+                    <i class="ph ph-wind text-2xl text-blue-300 mb-2"></i>
+                    <span class="text-blue-100 text-sm font-medium">Wind Speed</span>
+                    <span class="text-xl font-semibold mt-1"><span id="wind-value">--</span> km/h</span>
+                </div>
+            </div>
+            
+            <div class="text-center text-xs text-blue-200/60 mt-2">
+                Data provided by Open-Meteo
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const searchForm = document.getElementById('search-form');
+        const cityInput = document.getElementById('city-input');
+        const statusMessage = document.getElementById('status-message');
+        const weatherDisplay = document.getElementById('weather-display');
+        
+        const locationNameEl = document.getElementById('location-name');
+        const weatherDescEl = document.getElementById('weather-description');
+        const weatherIconEl = document.getElementById('weather-icon');
+        const tempValueEl = document.getElementById('temperature-value');
+        const humidityValueEl = document.getElementById('humidity-value');
+        const windValueEl = document.getElementById('wind-value');
+
+              function setStatus(type, message = '') {
+            statusMessage.classList.remove('hidden');
+            weatherDisplay.classList.add('hidden'); // Hide data while processing
+
+            if (type === 'loading') {
+                statusMessage.innerHTML = `
+                    <div class="loader mb-3"></div>
+                    <p class="text-blue-100">Fetching live weather data...</p>
+                `;
+            } else if (type === 'error') {
+                statusMessage.innerHTML = `
+                    <i class="ph ph-warning-circle text-4xl text-red-400 mb-2"></i>
+                    <p class="text-red-200 font-medium">${message}</p>
+                `;
+            } else {
+                statusMessage.classList.add('hidden');
+                weatherDisplay.classList.remove('hidden');
+                weatherDisplay.classList.add('fade-in'); // Trigger animation
+            }
+        }
+        function parseWeatherCode(code) {
+            const weatherMap = {
+                0: { desc: 'Clear sky', icon: '☀️' },
+                1: { desc: 'Mainly clear', icon: '🌤️' },
+                2: { desc: 'Partly cloudy', icon: '⛅' },
+                3: { desc: 'Overcast', icon: '☁️' },
+                45: { desc: 'Foggy', icon: '🌫️' },
+                48: { desc: 'Depositing rime fog', icon: '🌫️' },
+                51: { desc: 'Light drizzle', icon: '🌧️' },
+                53: { desc: 'Moderate drizzle', icon: '🌧️' },
+                55: { desc: 'Dense drizzle', icon: '🌧️' },
+                61: { desc: 'Slight rain', icon: '🌦️' },
+                63: { desc: 'Moderate rain', icon: '🌧️' },
+                65: { desc: 'Heavy rain', icon: '🌧️' },
+                71: { desc: 'Slight snow fall', icon: '🌨️' },
+                73: { desc: 'Moderate snow fall', icon: '❄️' },
+                75: { desc: 'Heavy snow fall', icon: '❄️' },
+                95: { desc: 'Thunderstorm', icon: '⛈️' }
+            };
+
+            return weatherMap[code] || { desc: 'Variable weather', icon: '☁️' };
+        }
+
+              async function fetchAndDisplayWeather(cityName) {
+            try {
+                setStatus('loading');
+
+                const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
+                
+                const geoResponse = await fetch(geoUrl);
+                
+                if (!geoResponse.ok) {
+                    throw new Error(`Geocoding server error: ${geoResponse.status}`);
+                }
+
+                const geoData = await geoResponse.json();
+
+                if (!geoData.results || geoData.results.length === 0) {
+                    throw new Error(`Could not find a city named "${cityName}". Please check the spelling.`);
+                }
+
+                const location = geoData.results[0];
+                const lat = location.latitude;
+                const lon = location.longitude;
+                const formattedLocationName = `${location.name}${location.country ? `, ${location.country}` : ''}`;
+
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
+
+                const weatherResponse = await fetch(weatherUrl);
+
+                if (!weatherResponse.ok) {
+                    throw new Error(`Weather server error: ${weatherResponse.status}`);
+                }
+
+                const weatherData = await weatherResponse.json();
+
+                if (!weatherData.current) {
+                    throw new Error('Received malformed data from the weather service.');
+                }
+
+                
+                const currentData = weatherData.current;
+                const weatherMeta = parseWeatherCode(currentData.weather_code);
+
+                locationNameEl.textContent = formattedLocationName;
+                weatherDescEl.textContent = weatherMeta.desc;
+                weatherIconEl.textContent = weatherMeta.icon;
+                
+                tempValueEl.textContent = Math.round(currentData.temperature_2m);
+                humidityValueEl.textContent = Math.round(currentData.relative_humidity_2m);
+                windValueEl.textContent = Math.round(currentData.wind_speed_10m);
+
+                setStatus('hidden');
+
+            } catch (error) {
+                // Catch network failures (e.g., offline) and thrown errors
+                console.error("Weather Fetch Error:", error);
+                
+                // Display user-friendly error message
+                let userMessage = error.message;
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    userMessage = 'Network error. Please check your internet connection.';
+                }
+                
+                setStatus('error', userMessage);
+            }
+        }
+
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent page reload
+            
+            const query = cityInput.value.trim();
+            
+            if (query) {
+                // Trigger the async workflow
+                fetchAndDisplayWeather(query);
+                cityInput.blur(); // Remove focus from keyboard on mobile
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchAndDisplayWeather('London');
+        });
+
+    </script>
+</body>
+</html>
